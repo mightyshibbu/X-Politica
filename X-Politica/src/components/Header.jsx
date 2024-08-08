@@ -10,7 +10,7 @@ import avatar from '../images/avatar.png'; // Import your avatar image
   sessionStorage.removeItem('user');
 }
 
-const Header = ({Name}) => {
+const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleMouseEnter = () => {
@@ -19,8 +19,11 @@ const Header = ({Name}) => {
 
   const [userName,setUserName]=useState("NAME");
   useEffect(() => {
-    console.log("UserName: ",Name)
-    setUserName(JSON.parse(sessionStorage.getItem('user')).name);
+    if(sessionStorage.getItem('isLoggedIn')){ 
+    setUserName(JSON.parse(sessionStorage.getItem('user')).name || "NAME");
+  }else {
+    setUserName("NAME");
+  }
   }, [])
   
   const handleMouseLeave = () => {
