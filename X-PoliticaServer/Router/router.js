@@ -1,28 +1,30 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
-import Leader from '../models/Leader.js';
 import jwt from 'jsonwebtoken';
+import Leader from '../models/Leader.js';
 import Citizen from '../models/Citizen.js';
-import bodyParser from 'body-parser';
-const app = express();
-app.use(bodyParser.json());
+import Claim from '../models/Claim.js';
+
 const router = express.Router();
-router.use(express.json());
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
-// Basic home route for the API
-// router.get('/', (_req, res) => {
-//   res.send('Auth API.\nPlease use POST /auth & POST /verify for authentication');
-// });
+
+// Middleware to ensure a user is authenticated
+const isAuthenticated = (req, res, next) => {
+  if (req.session.user) {
+    return next();
+  } else {
+    return res.redirect('/'); // Redirect to home or login page
+  }
+};
 
 router.post('/citizenSignup', async (req, res) => {
   try {
     const { name, email, password, phone, state, district, area, aadhaarNumber } = req.body;
-    console.log(JSON.stringify(req.body));
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new Citizen({ name, email, password: hashedPassword, phone, state, district, area, aadhaarNumber });
-
     const person = await user.save();
-    res.status(200).json(person);
+    req.session.user = person; // Store user in session
+    res.status(200).json({ message: 'Citizen created successfully', user: person });
   } catch (err) {
     console.error(err);
     res.status(500).json("Citizen NOT created");
@@ -32,17 +34,16 @@ router.post('/citizenSignup', async (req, res) => {
 router.post('/leaderSignup', async (req, res) => {
   try {
     const { name, party, aadhaarNumber, area, district, phone, email, password, role } = req.body;
-    // now you can access the variables
-    console.log(req.body);
-    
+
     if (!password) {
-      return res.status(400).json({ message: 'Password is required',password});
+      return res.status(400).json({ message: 'Password is required' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const leaderuser = new Leader({ name, party, aadhaarNumber, area, district, phone, email, password: hashedPassword, role });
     const newLeader = await leaderuser.save();
-    res.status(200).json(newLeader);
+    req.session.user = newLeader; // Store user in session
+    res.status(200).json({ message: 'Leader created successfully', user: newLeader });
   } catch (err) {
     console.error(err);
     res.status(500).json("Leader NOT created");
@@ -55,12 +56,10 @@ router.post('/loginC', async (req, res) => {
     const user = await Citizen.findOne({ email }).exec();
 
     if (user) {
-      console.log('Stored hashed password:', user.password);
-      console.log('Provided password:', password);
-
       const match = await bcrypt.compare(password, user.password);
       if (match) {
-        res.status(200).json(user);
+        req.session.user = user; // Store user in session on server
+        res.status(200).json({ message: 'Login successful', data:user});
       } else {
         res.status(401).json({ message: 'Invalid password' });
       }
@@ -72,18 +71,17 @@ router.post('/loginC', async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
 router.post('/loginL', async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await Leader.findOne({ email }).exec();
 
     if (user) {
-      console.log('Stored hashed password:', user.password);
-      console.log('Provided password:', password);
-
       const match = await bcrypt.compare(password, user.password);
       if (match) {
-        res.status(200).json(user);
+        req.session.user = user; // Store user in session on server
+        res.status(200).json({ message: 'Login successful', data:user});
       } else {
         res.status(401).json({ message: 'Invalid password' });
       }
@@ -97,71 +95,31 @@ router.post('/loginL', async (req, res) => {
 });
 
 
-
-
-
-
-
-
-
-
-
-
-// The auth endpoint that creates a new user record or logs a user based on an existing record
-router.post('/auth', async (req, res) => {
-  const { email, password } = req.body;
-
-  // Look up the user entry in the database
-  const user = await Citizen.findOne({ email }).exec();
-
-  if (user) {
-    // If user is found, compare the hashed passwords and generate the JWT token for the user
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      return res.status(401).json({ message: 'Invalid password' });
-    }
-    const token = jwt.sign({ email, signInTime: Date.now() }, jwtSecretKey);
-    return res.status(200).json({ message: 'success', token });
-  } else {
-    // return res.status(401).json({ message: 'no  user found' });
-    // If no user is found, hash the given password and create a new entry in the auth db
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new userModel({ email, password: hashedPassword });
-    await newUser.save();
-
-    const token = jwt.sign({ email, signInTime: Date.now() }, jwtSecretKey);
-    return res.status(200).json({ message: 'uccess', token });
-  }
-});
-
-// The verify endpoint that checks if a given JWT token is valid
-router.post('/verify', (req, res) => {
-  const tokenHeaderKey = 'jwt-token';
-  const authToken = req.headers[tokenHeaderKey.toLowerCase()];
-
-  if (!authToken) {
-    return res.status(401).json({ status: 'invalid auth', message: 'No token provided' });
-  }
-
+// Protected route with authentication check
+router.post('/newclaim', isAuthenticated, async (req, res) => {
   try {
-    const verified = jwt.verify(authToken, jwtSecretKey);
-    return res.status(200).json({ status: 'logged in', message: 'uccess', data: verified });
+    const { leaderId, title, description, state, district, area } = req.body;
+    if (!leaderId || !title || !description || !state || !district || !area) {
+      return res.status(400).json({ message: "Input error: Database declined your input" });
+    }
+    const claim = new Claim({ leaderId, title, description, state, district, area });
+    const savedClaim = await claim.save();
+    res.status(201).json({ message: "Claim added successfully!", claim: savedClaim });
   } catch (error) {
-    return res.status(401).json({ status: 'invalid auth', message: 'error' });
+    console.error('Error creating claim:', error);
+    res.status(500).json({ message: "Server error: Unable to save claim" });
   }
 });
 
-// An endpoint to see if there's an existing account for a given email address
-router.post('/check-account', async (req, res) => {
-  const { email } = req.body;
-
-  const user = await userModel.findOne({ email }).exec();
-
-  res.status(200).json({
-    status: user? 'User exists' : 'User does not exist',
-    userExists:!!user,
+// Route for logging out and destroying the session
+router.post('/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      return res.status(500).json({ message: 'Logout failed' });
+    }
+    res.clearCookie('connect.sid'); // Clears the session ID cookie
+    res.status(200).json({ message: 'Logout successful' });
   });
 });
-
 
 export default router;

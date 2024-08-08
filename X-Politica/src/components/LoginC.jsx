@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import '../css/style.css'
 const LoginC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,10 +10,30 @@ const LoginC = () => {
   const navigate = useNavigate();
 
   const validateForm = () => {
-    // Add validation logic here
-    return true;
+    let isValid = true;
+
+    if (email === '') {
+      setEmailError('Please enter your email');
+      isValid = false;
+    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+      setEmailError('Please enter a valid email');
+      isValid = false;
+    }
+
+    if (password === '') {
+      setPasswordError('Please enter a password');
+      isValid = false;
+    } else if (password.length < 8) {
+      setPasswordError('The password must be at least 8 characters long');
+      isValid = false;
+    }
+
+    return isValid;
   };
-  const handleSubmit = async () => {
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
     if (validateForm()) {
       try {
         const response = await fetch('http://localhost:3080/loginC', {
@@ -26,10 +46,19 @@ const LoginC = () => {
             password,
           }),
         });
-  
+
         if (response.ok) {
-          navigate('/homeC', { state: { message: 'Logged in successfully!' } });
+          const {message,data} = await response.json();
+          console.log('Inside LoginC handleSubmit + ', {data});
+          const {name} = data;
+          console.log("RENUKA",data)
+          sessionStorage.setItem('isLoggedIn', 'true');
+          sessionStorage.setItem('user', JSON.stringify(data)); // Store user info
+          // Redirect to homepage or other protected route
+          navigate('/homeC', { state: { message: 'Logged in successfully!', Name:name } });
+
         } else {
+          alert('Bad Credentials, Try again...')
           console.error('Error logging in:', response.statusText);
         }
       } catch (error) {
@@ -37,33 +66,7 @@ const LoginC = () => {
       }
     }
   };
-  
-  const onButtonClick = () => {
-    setEmailError('');
-    setPasswordError('');
-  
-    if (email === '') {
-      setEmailError('Please enter your email');
-      return;
-    }
-  
-    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-      setEmailError('Please enter a valid email');
-      return;
-    }
-  
-    if (password === '') {
-      setPasswordError('Please enter a password');
-      return;
-    }
-  
-    if (password.length < 8) {
-      setPasswordError('The password must be at least 8 characters long');
-      return;
-    }
-  
-    handleSubmit();
-  };
+
   const onBackButtonClick = () => {
     navigate('/'); // Navigates to the Home component without reloading the page
   };
@@ -74,31 +77,33 @@ const LoginC = () => {
         <div>Citizen Login</div>
       </div>
       <br />
-      <div className={'inputContainer'}>
-        <input
-          value={email}
-          placeholder="Enter your email here"
-          onChange={(ev) => setEmail(ev.target.value)}
-          className={'inputBox'}
-        />
-        <label className="errorLabel">{emailError}</label>
-      </div>
-      <br />
-      <div className={'inputContainer'}>
-        <input
-          type='password'
-          value={password}
-          placeholder="Enter your password here"
-          onChange={(ev) => setPassword(ev.target.value)}
-          className={'inputBox'}
-        />
-        <label className="errorLabel">{passwordError}</label>
-      </div>
-      <br />
-      <div className={'inputContainer'}>
-        <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Log in'} />
-        <input className={'inputButton'} type="button" onClick={onBackButtonClick} value={'Back'} />
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div className={'inputContainer'}>
+          <input
+            value={email}
+            placeholder="Enter your email here"
+            onChange={(ev) => setEmail(ev.target.value)}
+            className={'inputBox'}
+          />
+          <label className="errorLabel">{emailError}</label>
+        </div>
+        <br />
+        <div className={'inputContainer'}>
+          <input
+            type="password"
+            value={password}
+            placeholder="Enter your password here"
+            onChange={(ev) => setPassword(ev.target.value)}
+            className={'inputBox'}
+          />
+          <label className="errorLabel">{passwordError}</label>
+        </div>
+        <br />
+        <div className={'inputContainer'}>
+          <button className={'button'} type="submit">Log in</button>
+          <button className={'button'} type="button" onClick={onBackButtonClick}>Back</button>
+        </div>
+      </form>
     </div>
   );
 };

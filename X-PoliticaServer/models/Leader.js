@@ -2,9 +2,10 @@
 import mongoose from 'mongoose';
 
 const LeaderSchema = new mongoose.Schema({
-  name: {
+  name:{ 
     type: String,
-    required: true
+    required: true,
+    unique: false
   },
   party: {
     type: String,

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import {useNavigate, BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import '../css/style.css'
 const loginL = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -53,9 +53,17 @@ const loginL = () => {
       });
 
       if (response.ok) {
-        navigate('/homeC', { state: { message: 'Logged in successfully!' } });
+        const { data } = await response.json();
+        // Assuming data is an object with a Name property
+        const userName = data.name; // Extract the Name property from data
+        sessionStorage.setItem('isLoggedIn', 'true');
+        sessionStorage.setItem('user', JSON.stringify(data)); // Store user info
+        console.log("Inside success LoginL: UserName: ",userName)
+        navigate('/homeL', { state: { message: 'Logged in successfully!', Name: userName } });
       } else {
+        alert('Bad Credentials, Try again...')
         console.error('Error logging in:', response.statusText);
+        
       }
     } catch (error) {
       console.error('Error logging in:', error);
@@ -94,8 +102,8 @@ const loginL = () => {
       </div>
       <br />
       <div className={'inputContainer'}>
-        <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Log in'} />
-        <input className={'inputButton'} type="button" onClick={onBackButtonClick} value={'Back'} />
+        <input className={'button'} type="button" onClick={onButtonClick} value={'Log in'} />
+        <input className={'button'} type="button" onClick={onBackButtonClick} value={'Back'} />
       </div>
     </div>
   );

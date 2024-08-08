@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import LoginC from './LoginC'; // Import Login as Citizen component
-import LoginL from './LoginL'; // Import Login as Leader component
-
-const Home = (props) => {
+import {useNavigate, BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+const Landing = (props) => {
   const { loggedIn, email } = props;
   const navigate = useNavigate();
   const [showLogin, setShowLogin] = useState(null); // Track which login component to show
@@ -54,4 +51,4 @@ const Home = (props) => {
   );
 };
 
-export default Home;
+export default Landing;

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React,{ useState } from 'react';
+import {useNavigate, BrowserRouter, Routes, Route, Link } from 'react-router-dom'; 
 
-function CitizenSignup() {
+function  CitizenSignup() {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -72,8 +72,12 @@ function CitizenSignup() {
         });
 
         if (response.ok) {
-          navigate('/homeC', { state: { message: 'Account created successfully! Start by logging in again...' } });
+          const data = await response.json();
+          const person = await data.save();
+          req.session.user = person; 
+          navigate('/homeC',{  state: {message: 'Account created successfully! Start by logging in again...' ,Name:name}} );
         } else {
+          alert('Invalid entries, Try again...')
           console.error('Error creating citizen:', response.statusText);
         }
       } catch (error) {

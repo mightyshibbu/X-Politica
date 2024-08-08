@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import {useNavigate, BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 function LeaderSignUp() {
   const navigate = useNavigate();
   const [name, setName] = useState('');
@@ -52,17 +51,7 @@ function LeaderSignUp() {
   const handleSubmit = async (event) => {
     event.preventDefault();
       try {
-        console.log(JSON.stringify({
-          name,
-          party,
-          aadhaarNumber,
-          area: area.toLowerCase(),
-          district: district.toLowerCase(),
-          phone,
-          email,
-          password,
-          role:'leader'
-        }))
+        
         const response = await fetch('http://localhost:3080/leaderSignup', {
           method: 'POST',
           headers: {
@@ -81,8 +70,9 @@ function LeaderSignUp() {
           })
         });
         if (response.ok) {
-          navigate('/loginL', { state: { message: 'Account created successfully! Start by logging in again...' } });
+          navigate('/homeL', { state: { message: 'Account created successfully! Start by logging in again...', Name:name} });
         } else {
+          alert('Invalid entries, Try again...')
           console.error('Error creating leader:', response.statusText);
         }
       } catch (error) {
