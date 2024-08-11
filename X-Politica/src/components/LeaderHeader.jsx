@@ -26,7 +26,11 @@ const LeaderHeader = () => {
     setIsDropdownOpen(false);
   };
   useEffect(() => {
-    setUserName(JSON.parse(sessionStorage.getItem('user')).name)
+    if(sessionStorage.getItem('isLoggedIn')){ 
+      setUserName(JSON.parse(sessionStorage.getItem('user')).name || "NAME");
+    }else {
+      setUserName("NAME");
+    }
     }, []);
 
   return (

@@ -21,8 +21,8 @@ const NewClaim = () => {
     useEffect(() => {
       const isLoggedIn = sessionStorage.getItem('isLoggedIn'); // Assuming you store login state in sessionStorage
       if (!isLoggedIn) {
-        alert("Log in first!")
         navigate('/'); // Redirect to the login page if not logged in
+        alert("Log in first!")
       }
     }, [navigate]);
   return (

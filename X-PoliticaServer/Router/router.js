@@ -4,15 +4,23 @@ import jwt from 'jsonwebtoken';
 import Leader from '../models/Leader.js';
 import Citizen from '../models/Citizen.js';
 import Claim from '../models/Claim.js';
+// import session from 'express-session';
 
 const router = express.Router();
+import dotenv from 'dotenv';
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
+dotenv.config();
+
 
 // Middleware to ensure a user is authenticated
 const isAuthenticated = (req, res, next) => {
+  // console.log('Session in isAuthenticated:', req.session);
+  // console.log(req.session.user);
   if (req.session.user) {
+    console.log("INSIDE isAuthenticated if block")
     return next();
   } else {
+    console.log("INSIDE isAuthenticated else block")
     return res.redirect('/'); // Redirect to home or login page
   }
 };
@@ -80,8 +88,12 @@ router.post('/loginL', async (req, res) => {
     if (user) {
       const match = await bcrypt.compare(password, user.password);
       if (match) {
-        req.session.user = user; // Store user in session on server
-        res.status(200).json({ message: 'Login successful', data:user});
+        // req.session.user = user; // Store user in session on server
+        // console.log('IN LOGIN LEADER: Session in isAuthenticated:', req.session);
+        const token = jwt.sign({ aadhaarNumber:user.aadhaarNumber, userId: user._id, email: user.email }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+        console.log("token loginL : " , token);
+        
+        res.status(200).json({ message: 'Login successful', data:user,token:token });
       } else {
         res.status(401).json({ message: 'Invalid password' });
       }
@@ -94,22 +106,64 @@ router.post('/loginL', async (req, res) => {
   }
 });
 
-
-// Protected route with authentication check
-router.post('/newclaim', isAuthenticated, async (req, res) => {
+router.post('/newclaim', async (req, res) => {
   try {
-    const { leaderId, title, description, state, district, area } = req.body;
-    if (!leaderId || !title || !description || !state || !district || !area) {
-      return res.status(400).json({ message: "Input error: Database declined your input" });
+    let auth = req.headers.authorization;
+    const token = auth.split(" ")[1]
+    console.log('Token newClaims :',token)
+   
+    const decoded = jwt.verify(token, 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6');
+    console.log('Decode:',decoded)
+    if (decoded) {
+      console.log("in decoded");
+      // const aadhaarNumber = decoded.aadhaarNumber
+      // console.log("adh ", aadhaarNumber);
+      
+      // Use the decoded data to authenticate the user
+      const user = await Leader.findById(decoded.userId).exec();
+      console.log("if user " , user);
+      if (user) {
+        // Allow access to the protected resource
+
+        const { leaderId, title, description, state, district, area } = req.body;
+        const claim = new Claim({ leaderId, title, description, state, district, area });
+        const savedClaim = await claim.save();
+        res.json({ message: 'Claim added successfully!', claim: savedClaim });
+      } else {
+        res.status(401).json({ message: 'Invalid token' });
+      }
+    } else {
+      res.status(401).json({ message: 'Invalid token' });
     }
-    const claim = new Claim({ leaderId, title, description, state, district, area });
-    const savedClaim = await claim.save();
-    res.status(201).json({ message: "Claim added successfully!", claim: savedClaim });
   } catch (error) {
-    console.error('Error creating claim:', error);
-    res.status(500).json({ message: "Server error: Unable to save claim" });
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
+//MERA CODE
+// Protected route with authentication check
+// router.post('/newclaim', isAuthenticated, async (req, res) => {
+//   try {
+//     console.log("INSIDE /newclaim try block")
+//     const { leaderId, title, description, state, district, area } = req.body;
+//     console.log(leaderId);
+//     console.log(title);
+//     console.log(description);
+//     console.log(state);
+    
+//     if (!leaderId || !title || !description || !state || !district || !area) {
+//       return res.status(400).json({ message: "Input error: Database declined your input" });
+//     }
+//     const claim = new Claim({ leaderId, title, description, state, district, area });
+//     console.log("INSIDE /newclaim block:",claim)
+//     const savedClaim = await claim.save();
+//     res.status(201).json({ message: "Claim added successfully!", claim: savedClaim });
+//   } catch (error) {
+//     console.error('Error creating claim:', error);
+//     res.status(500).json({ message: "Server error: Unable to save claim" });
+//   }
+// });
 
 // Route for logging out and destroying the session
 router.post('/logout', (req, res) => {

@@ -5,7 +5,8 @@ import mongoose from 'mongoose';
 import session from 'express-session';
 import connectMongoDBSession from 'connect-mongodb-session';
 import router from './Router/router.js';
-
+import MongoStore from 'connect-mongo'
+import jwt from 'jsonwebtoken'
 dotenv.config();
 console.log('MONGODB_URI:', process.env.MONGODB_URI);
 console.log('JWT_SECRET_KEY:', process.env.JWT_SECRET_KEY);
@@ -23,14 +24,23 @@ store.on('error', function(error) {
 });
 
 // Session middleware
+// app.use(session({
+//   secret: process.env.JWT_SECRET_KEY,  // A secret key for signing the session ID cookie
+//   resave: false,                       // Forces session to be saved back to the store
+//   saveUninitialized: false,            // Forces a session that is "uninitialized" to be saved to the store
+//   store: store,                        // MongoDB session store
+//   cookie: {
+//     maxAge: 1000 * 60 * 60 * 24 // 1 day in milliseconds
+//   }
+// }));
 app.use(session({
-  secret: process.env.JWT_SECRET_KEY,  // A secret key for signing the session ID cookie
-  resave: false,                       // Forces session to be saved back to the store
-  saveUninitialized: false,            // Forces a session that is "uninitialized" to be saved to the store
-  store: store,                        // MongoDB session store
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 24 // 1 day in milliseconds
-  }
+  secret: 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6',
+  resave: false,
+  saveUninitialized: true,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI, // Replace with your DB URI
+    collectionName: 'sessions'
+  })
 }));
 
 // Enable CORS for all origins
@@ -39,6 +49,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   maxAge: 3600,
+  credentials: true
 }));
 
 // Connect to MongoDB

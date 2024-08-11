@@ -27,32 +27,37 @@ const ClaimForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     // if (!validate())  ;
-    console.log("CLICKEDD!!")
+    console.log("CLICKEDD!!");
     try {
-      const response = await fetch('http://localhost:3080/newclaim', {
-        method: 'POST',
+      const token = JSON.parse(sessionStorage.getItem("token"));
+      console.log(token);
+      const response = await fetch("http://localhost:3080/newclaim", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
-          leaderId:JSON.parse(sessionStorage.getItem('user')).aadhaarNumber,
+          leaderId: JSON.parse(sessionStorage.getItem("user")).aadhaarNumber,
           title,
           description,
           state,
           district,
           area,
-          datetime: new Date(),
+          // datetime: new Date(),
         }),
       });
-
+  
       if (response.ok) {
-        navigate('/newclaim', { state: { message: 'Claim added successfully!' }});
-        console.log("AFTER NAVI")
+        const { claim } = await response.json();
+        console.log("Claim object made: ", claim);
+        navigate("/newclaim", { state: { message: "Claim added successfully!" } });
+        console.log("AFTER NAVI");
       } else {
-        console.error('Error creating claim post! :', response.statusText);
+        console.error("Error creating claim post! :", response.statusText);
       }
     } catch (error) {
-      console.error('Error creating claim:', error);
+      console.error("Error creating claim:", error);
     }
   };
 

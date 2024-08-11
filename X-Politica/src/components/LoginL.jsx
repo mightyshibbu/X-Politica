@@ -53,11 +53,12 @@ const loginL = () => {
       });
 
       if (response.ok) {
-        const { data } = await response.json();
+        const { data , token } = await response.json();
         // Assuming data is an object with a Name property
         const userName = data.name; // Extract the Name property from data
         sessionStorage.setItem('isLoggedIn', 'true');
         sessionStorage.setItem('user', JSON.stringify(data)); // Store user info
+        sessionStorage.setItem('token', JSON.stringify(token)); // Store user info
         console.log("Inside success LoginL: UserName: ",userName)
         navigate('/homeL', { state: { message: 'Logged in successfully!', Name: userName } });
       } else {
