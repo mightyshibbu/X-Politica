@@ -1,34 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import {Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import '../css/style.css';
 import '../css/swiper-bundle.min.css';
 import logo1 from '../images/logo/logo.png';
 import avatar from '../images/avatar.png'; // Import your avatar image
 
- function LogOut() {
+function LogOut() {
   sessionStorage.removeItem('isLoggedIn');
   sessionStorage.removeItem('user');
+  sessionStorage.removeItem('token');
+  sessionStorage.removeItem('data');
 }
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [userName, setUserName] = useState("NAME");
 
   const handleMouseEnter = () => {
     setIsDropdownOpen(true);
   };
 
-  const [userName,setUserName]=useState("NAME");
-  useEffect(() => {
-    if(sessionStorage.getItem('isLoggedIn')){ 
-    setUserName(JSON.parse(sessionStorage.getItem('user')).name || "NAME");
-  }else {
-    setUserName("NAME");
-  }
-  }, [])
-  
   const handleMouseLeave = () => {
     setIsDropdownOpen(false);
   };
+
+  useEffect(() => {
+    const user = sessionStorage.getItem('user');
+    if (user) {
+      try {
+        console.log("User:",user);
+        const parsedUser = JSON.parse(user);
+        console.log("parsedUser Name:",parsedUser.name);
+        setUserName(parsedUser.name || "NO NAME");
+      } catch (error) {
+        console.error("Error parsing user from sessionStorage:", error);
+
+      }
+    } else {
+      setUserName("NAME");
+    }
+  }, []);
 
   return (
     <div>
@@ -43,13 +54,13 @@ const Header = () => {
               </div>
               <div className="menu-area">
                 <ul className="menu menu--style">
-                    <li>
-                      <Link to="#0">Services</Link>
-                      <ul className="submenu">
-                        <li><Link to="/claim">Claim Validation</Link></li>
-                        <li><Link to="index1-light.html">Vote</Link></li>
-                      </ul>
-                    </li>
+                  <li>
+                    <Link to="#0">Services</Link>
+                    <ul className="submenu">
+                      <li><Link to="/claim">Claim Validation</Link></li>
+                      <li><Link to="index1-light.html">Vote</Link></li>
+                    </ul>
+                  </li>
                   <li>
                     <Link to="#0">Search</Link>
                     <ul className="submenu">

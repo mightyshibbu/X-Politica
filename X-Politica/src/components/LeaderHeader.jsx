@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom'; 
 import '../css/style.css';
 import '../css/swiper-bundle.min.css';
-// import '../css/all.min.css';
-// import '../css/aos.css';
-// import '../css/bootstrap.min.css';
-// import '../css/lightcase.css';
 
 import logo1 from '../images/logo/logo.png';
 import avatar from '../images/avatar.png'; // Import your avatar image
@@ -20,19 +16,29 @@ const LeaderHeader = () => {
  function LogOut() {
   sessionStorage.removeItem('isLoggedIn');
   sessionStorage.removeItem('user');
+  sessionStorage.removeItem('token');
+  sessionStorage.removeItem('data');
 }
   const [userName,setUserName]=useState("Uncle John");
   const handleMouseLeave = () => {
     setIsDropdownOpen(false);
   };
   useEffect(() => {
-    if(sessionStorage.getItem('isLoggedIn')){ 
-      setUserName(JSON.parse(sessionStorage.getItem('user')).name || "NAME");
-    }else {
+    const user = sessionStorage.getItem('data');
+    if (user) {
+      try {
+        console.log("User:",user);
+        const parsedUser = JSON.parse(user);
+        console.log("parsedUser Name:",parsedUser.name);
+        setUserName(parsedUser.name || "NO NAME");
+      } catch (error) {
+        console.error("Error parsing user from sessionStorage:", error);
+        setUserName("NAME");
+      }
+    } else {
       setUserName("NAME");
     }
-    }, []);
-
+  }, []);
   return (
     <div>
       <header className="header-section bg-color-3">

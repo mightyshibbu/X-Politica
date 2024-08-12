@@ -30,6 +30,9 @@ const ClaimForm = () => {
     console.log("CLICKEDD!!");
     try {
       const token = JSON.parse(sessionStorage.getItem("token"));
+      const user=sessionStorage.getItem("user")
+      const parsedUser = JSON.parse(user);
+      
       console.log(token);
       const response = await fetch("http://localhost:3080/newclaim", {
         method: "POST",
@@ -38,12 +41,13 @@ const ClaimForm = () => {
           "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
-          leaderId: JSON.parse(sessionStorage.getItem("user")).aadhaarNumber,
+          leaderId: parsedUser.aadhaarNumber,
           title,
           description,
           state,
           district,
           area,
+          activeStatus:'ACTIVE'
           // datetime: new Date(),
         }),
       });

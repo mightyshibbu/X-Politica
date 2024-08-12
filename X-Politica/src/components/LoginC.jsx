@@ -48,14 +48,16 @@ const LoginC = () => {
         });
 
         if (response.ok) {
-          const {message,data} = await response.json();
-          console.log('Inside LoginC handleSubmit + ', {data});
+          const {message,data,token} = await response.json();
+          console.log('Inside LoginC handleSubmit data:+ ', {data});
+          console.log('Inside LoginC handleSubmit token: + ', {token});
+          console.log('Inside LoginC handleSubmit message:+ ', {message});
           const {name} = data;
-          console.log("RENUKA",data)
           sessionStorage.setItem('isLoggedIn', 'true');
           sessionStorage.setItem('user', JSON.stringify(data)); // Store user info
+          sessionStorage.setItem('token', JSON.stringify(token)); // Store user token
           // Redirect to homepage or other protected route
-          navigate('/homeC', { state: { message: 'Logged in successfully!', Name:name } });
+          navigate('/homeC', { state: { message: 'Logged in successfully!', Name:name,token:token } });
 
         } else {
           alert('Bad Credentials, Try again...')

@@ -1,20 +1,25 @@
-import React, { useState } from 'react';
-const ClaimCard = ({claim,setSelectedClaim}) => {
+import React from 'react';
+
+const ClaimCard = ({ claim, setSelectedClaim }) => {
   return (
-    <div style={styles.card} onClick={() => setSelectedClaim(claim)}>
+    <div onClick={() => setSelectedClaim(claim)} style={styles.card}>
       <h3>{claim.title}</h3>
+      <p>{claim.description}</p>
+      <p><strong>State:</strong> {claim.state}</p>
+      <p><strong>District:</strong> {claim.district}</p>
+      <p><strong>Area:</strong> {claim.area}</p>
+      <p><strong>Active Status:</strong> {claim.activeStatus}</p>
     </div>
   );
 };
 
 const styles = {
   card: {
-    background: '#f4f4f4',
+    border: '1px solid #ddd',
+    borderRadius: '5px',
     padding: '10px',
-    margin: '10px 0',
-    cursor: 'pointer',
-    border: '1px solid #ccc',
-    borderRadius: '5px'
+    marginBottom: '10px',
+    cursor: 'pointer'
   }
 };
 

@@ -3378,7 +3378,7 @@ h6 a {
     -o-transform: translateY(35px);
     transform: translateY(35px);
     position: absolute;
-    top: 60%;
+    top: 30%;
     left: 0;
     z-index: 9;
     background: var(--wh-color);

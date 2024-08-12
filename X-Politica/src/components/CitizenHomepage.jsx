@@ -7,22 +7,37 @@ import Header from './Header';
 function CitizenHomepage() {
   const location = useLocation();
   const navigate = useNavigate();
-  // State to manage whether the alert has been shown
-  const [alertShown, setAlertShown] = useState(false);
+  const [name, setName] = useState('');
+
   useEffect(() => {
-    const isLoggedIn = sessionStorage.getItem('isLoggedIn'); // Assuming you store login state in sessionStorage
-    if (!isLoggedIn) {
-      if (!alertShown) {
+    const token = sessionStorage.getItem('token'); // Get the JWT token from sessionStorage
+    if (!token) {
         alert("Log in first!");
-        setAlertShown(true); // Mark the alert as shown
-      }
-      navigate('/'); // Redirect to the login page if not logged in
+        navigate('/'); // Redirect to the login page if not logged in
+    } else {
+        try {
+            const base64Url = token.split('.')[1]; // Get the payload part of the token
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'); // Replace URL-safe characters
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            
+            const parsedToken = JSON.parse(jsonPayload);
+            const name = parsedToken.user.name; // Extract the name from the token
+            setName(name);
+            console.log("Name extracted from token:", name);
+        } catch (error) {
+            console.error("Invalid token:", error);
+            alert("Invalid session. Please log in again.");
+            sessionStorage.removeItem('token'); // Clear the invalid token
+            navigate('/'); // Redirect to the login page
+        }
     }
-  }, [navigate, alertShown]); // Include alertShown in dependency array
+  }, [navigate]);
 
   return (
     <>
-      <Header/>
+      <Header name={name} />
       <Corousel/>
       <CardTray/>
     </>

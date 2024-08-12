@@ -34,6 +34,10 @@ const ClaimSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  activeStatus:{
+    type: String,
+    required: false
+  }
 });
 
 // Create the Claim model

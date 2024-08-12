@@ -70,7 +70,15 @@ function LeaderSignUp() {
           })
         });
         if (response.ok) {
-          navigate('/homeL', { state: { message: 'Account created successfully! Start by logging in again...', Name:name} });
+          const {message,data,token} = await response.json();
+          console.log('Inside LoginC handleSubmit data:+ ', {data});
+          console.log('Inside LoginC handleSubmit token: + ', {token});
+          console.log('Inside LoginC handleSubmit message:+ ', {message});
+          console.log(message,data,token);
+          sessionStorage.setItem('token', JSON.stringify(token)); // Store user token
+          sessionStorage.setItem('data', JSON.stringify(data)); // Store user token
+           // Store user token
+          navigate('/homeL', { state: { message: 'Account created successfully! Start by logging in again...', Name:name,token:token} });
         } else {
           alert('Invalid entries, Try again...')
           console.error('Error creating leader:', response.statusText);

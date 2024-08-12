@@ -1,7 +1,7 @@
-import React,{ useState } from 'react';
-import {useNavigate, BrowserRouter, Routes, Route, Link } from 'react-router-dom'; 
+import React, { useState } from 'react';
+import { useNavigate, BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
-function  CitizenSignup() {
+function CitizenSignup() {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -39,20 +39,18 @@ function  CitizenSignup() {
       errors.password = 'Password must be at least 8 characters long';
     }
     setErrors(errors);
-    if (Object.keys(errors).length > 0) {
-      // Display error messages to the user
-      console.error('Error:', errors);
-      alert(errors)
-      navigate('/leaderSignup');
-    } else {
-      handleSubmit();
-    }
     return errors;
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (validateForm()) {
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      // Display error messages to the user
+      console.error('Error:', errors);
+      alert(errors);
+      navigate('/leaderSignup');
+    } else {
       try {
         const response = await fetch('http://localhost:3080/citizenSignup', {
           method: 'POST',
@@ -67,17 +65,18 @@ function  CitizenSignup() {
             state,
             district,
             area,
-            aadhaarNumber: aadhaarNumber,
+            aadhaarNumber: aadhaarNumber
           }),
         });
 
         if (response.ok) {
-          const data = await response.json();
-          const person = await data.save();
-          req.session.user = person; 
-          navigate('/homeC',{  state: {message: 'Account created successfully! Start by logging in again...' ,Name:name}} );
+          const { data, user, token,message } = await response.json();
+          console.log(message, data, token);
+          sessionStorage.setItem('token', JSON.stringify(token)); // Store user token
+          sessionStorage.setItem('data', JSON.stringify(data));
+          navigate('/homeC', { state: { message: 'Account created successfully! Start by logging in again...', Name: name } });
         } else {
-          alert('Invalid entries, Try again...')
+          alert('Invalid entries, Try again...');
           console.error('Error creating citizen:', response.statusText);
         }
       } catch (error) {
