@@ -25,7 +25,8 @@ const Header = () => {
   };
 
   useEffect(() => {
-    const user = sessionStorage.getItem('user');
+    const user = sessionStorage.getItem('data')?sessionStorage.getItem('data'):sessionStorage.getItem('user');
+    
     if (user) {
       try {
         console.log("User:",user);
@@ -58,7 +59,7 @@ const Header = () => {
                     <Link to="#0">Services</Link>
                     <ul className="submenu">
                       <li><Link to="/claim">Claim Validation</Link></li>
-                      <li><Link to="index1-light.html">Vote</Link></li>
+                      <li><Link to="/viewclaims">View Claims</Link></li>
                     </ul>
                   </li>
                   <li>

@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import Header from './Header';
 import ActiveClaims from './ActiveClaims';
-import ViewClaimDetail from './ViewClaimDetail';
+import ClaimDetail from './ClaimDetail';
 import { useNavigate } from 'react-router-dom';
+import PendingClaims from './PendingClaims';
 
-const ClaimValidation = () => {
+const ViewClaims = () => {
   const [selectedClaim, setSelectedClaim] = useState(null);
 
   return (
     <div style={styles.app}>
       <Header />
       <div style={styles.main}>
-        <ActiveClaims setSelectedClaim={setSelectedClaim} />
-        <ViewClaimDetail claim={selectedClaim} />
+        <PendingClaims setSelectedClaim={setSelectedClaim} />
+        <ClaimDetail claim={selectedClaim} />
       </div>
     </div>
   );
@@ -29,4 +30,4 @@ const styles = {
   },
 };
 
-export default ClaimValidation;
+export default ViewClaims;

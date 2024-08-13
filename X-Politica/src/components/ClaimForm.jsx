@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const ClaimForm = () => {
+const ClaimForm = ({setClaimSubmitted}) => {
   const [leaderId, setLeaderId] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -30,7 +30,7 @@ const ClaimForm = () => {
     console.log("CLICKEDD!!");
     try {
       const token = JSON.parse(sessionStorage.getItem("token"));
-      const user=sessionStorage.getItem("user")
+      const user=sessionStorage.getItem("user")?sessionStorage.getItem("user"):sessionStorage.getItem("data")
       const parsedUser = JSON.parse(user);
       
       console.log(token);
@@ -56,7 +56,8 @@ const ClaimForm = () => {
         const { claim } = await response.json();
         console.log("Claim object made: ", claim);
         navigate("/newclaim", { state: { message: "Claim added successfully!" } });
-        console.log("AFTER NAVI");
+        setClaimSubmitted(true);
+        alert("Claim uploaded successfully!")
       } else {
         console.error("Error creating claim post! :", response.statusText);
       }

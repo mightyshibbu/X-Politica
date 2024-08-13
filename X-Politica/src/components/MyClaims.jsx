@@ -7,12 +7,13 @@ const MyClaims = ({ setSelectedClaim }) => {
   const [myclaims, setMyClaims] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [claimSubmitted, setClaimSubmitted] = useState(true);
   const navigate = useNavigate(); // Initialize the navigate function
 
   const func = async () =>{
     const token = sessionStorage.getItem('token');
-    const user = sessionStorage.getItem('user');
-  
+    const user = sessionStorage.getItem('user')?sessionStorage.getItem('user'):sessionStorage.getItem('data');
+    console.log("INSIDE func in MyClaims")
     if (!token) {
       alert("Log in first!");
       navigate('/');
@@ -55,9 +56,11 @@ const MyClaims = ({ setSelectedClaim }) => {
       navigate('/');
     }
   }
-  useEffect(() => {  
-  func();
-  }, []);
+  useEffect(() => {
+    if (claimSubmitted) {
+      func();
+    }
+  }, [claimSubmitted]);
   if (loading) {
     return <p>Loading claims...</p>;
   }

@@ -10,7 +10,9 @@ import CitizenHomepage from './components/CitizenHomepage.jsx';
 import ClaimValidation from './components/ClaimValidation.jsx';
 import LeaderHomepage from './components/LeaderHomepage.jsx';
 import NewClaim from './components/NewClaim.jsx';
-
+import ViewClaims from './components/ViewClaims'
+import MyClaims from './components/MyClaims.jsx';
+import ViewClaimsLeader from './components/ViewClaimsLeader.jsx';
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState('');
@@ -28,7 +30,9 @@ function App() {
         
         <Route path="/homeL" element={<LeaderHomepage />} />
 
-        <Route path="/claim" element={<ClaimValidation />} />
+        <Route path="/viewclaims" element={<ClaimValidation/>} />
+        <Route path="/viewclaimsleader" element={<ViewClaimsLeader/>} />
+        <Route path="/claim" element={< ViewClaims/>} />
         <Route path="/newclaim" element={<NewClaim />} />
 
       </Routes>

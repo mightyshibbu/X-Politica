@@ -24,7 +24,7 @@ const LeaderHeader = () => {
     setIsDropdownOpen(false);
   };
   useEffect(() => {
-    const user = sessionStorage.getItem('data');
+    const user = sessionStorage.getItem('user')?sessionStorage.getItem('user'):sessionStorage.getItem('data');
     if (user) {
       try {
         console.log("User:",user);
@@ -56,7 +56,7 @@ const LeaderHeader = () => {
                       Manage Claims
                       <ul className="submenu">
                         <li><Link to="/newclaim">New Claim</Link></li>
-                        <li><Link to="index1-light.html">View Claims</Link></li>
+                        <li><Link to="/viewclaimsleader">View Claims</Link></li>
                       </ul>
                     </li>
                   <li>

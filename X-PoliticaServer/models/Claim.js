@@ -37,6 +37,32 @@ const ClaimSchema = new mongoose.Schema({
   activeStatus:{
     type: String,
     required: false
+  },
+  totalCitizenUnderArea:{
+    type: Number,
+    required: true
+  },
+  approvals:{
+    type: Number,
+    required: true
+  },
+  denials:{
+    type: Number,
+    required: true  
+  },
+  validationStatus:{
+    type: Boolean,
+    required:true
+  },
+  citizensApproved:{
+    type:Array,
+    required: false,
+    default:[]
+  },
+  citizensDenied:{
+    type:Array,
+    required: false,
+    default:[]
   }
 });
 

@@ -5,10 +5,11 @@ import ClaimForm from './ClaimForm.jsx';
 import MyClaims from './MyClaims.jsx';
 import '../css/style.css';
 import ClaimDetail from './ClaimDetail.jsx';
-
+import ViewClaimDetail from './ViewClaimDetail.jsx'
 const NewClaim = () => {
   const navigate = useNavigate();
   const [claimSubmitted, setClaimSubmitted] = useState(true);
+  const [selectedClaim, setSelectedClaim] = useState(null);
   useEffect(() => {
     const token = sessionStorage.getItem('token'); // Get the JWT token from sessionStorage
     const user = sessionStorage.getItem('user'); // Get the user data from sessionStorage
@@ -53,9 +54,9 @@ const NewClaim = () => {
     <div style={styles.app}>
       <LeaderHeader />
       <div style={styles.main}>
-        <ClaimForm setClaimSubmitted={setClaimSubmitted}/>
-        {/* <MyClaims setClaimSubmitted={setClaimSubmitted}/> */}
-        {/* <ClaimDetail/> */}
+        {/* <ClaimForm setClaimSubmitted={setClaimSubmitted}/> */}
+        <MyClaims setClaimSubmitted={setClaimSubmitted} setSelectedClaim={setSelectedClaim}/>
+        <ViewClaimDetail claim={selectedClaim} />
       </div>
     </div>
   );

@@ -41,6 +41,16 @@ const CitizenSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  approvedList:{
+    type: Array,
+    requied:false,
+    default:[]
+  },
+  deniedList:{
+    type: Array,
+    requied:false,
+    default:[]
+  }
 });
 
 const Citizen = mongoose.model('Citizen', CitizenSchema);

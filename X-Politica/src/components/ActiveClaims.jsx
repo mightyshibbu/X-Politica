@@ -1,187 +1,3 @@
-// // import React, { useState, useEffect } from 'react';
-// // import { useNavigate } from 'react-router-dom';
-// // import ClaimCard from './ClaimCard';
-
-// // const ActiveClaims = () => {
-// //   const [activeclaims, setActiveclaims] = useState([]);
-// //   const [loading, setLoading] = useState(true);
-// //   const [error, setError] = useState(null);
-// //   const [selectedClaim,setSelectedClaim] = useState(null);
-  
-// //   const navigate = useNavigate(); // Initialize the navigate function
-// //   //START
-// //   const func = async () =>{
-// //     const token = sessionStorage.getItem('token');
-// //     const user = sessionStorage.getItem('user');
-    
-// //     if (!token) {
-// //       alert("Log in first!");
-// //       navigate('/');
-// //       return;
-// //     }
-    
-// //     console.log("INSIDE ActiveClaims / token:",token)
-// //     try {
-// //       const parsedUser = JSON.parse(user);
-// //       console.log("parsedUser:",parsedUser)
-// //       // Fetch claims from the backend using the user's Aadhaar number
-// //       fetch(`http://localhost:3080/activeclaims`, {
-// //         method: 'GET',
-// //         headers: {
-// //           'Authorization': `Bearer ${token}`
-// //         }
-// //       })
-// //       .then(response => {
-// //         // Check if the response is JSON or not
-// //         const contentType = response.headers.get("content-type");
-// //         if (!contentType || !contentType.includes("application/json")) {
-// //           throw new TypeError("Expected JSON, got " + contentType);
-// //         }
-// //         return response.json();
-// //       })
-// //       .then(data => {
-// //         setActiveclaims(data);
-// //         setLoading(false);
-// //       })
-// //       .catch(error => {
-// //         console.error('Error fetching claims:', error);
-// //         setError('Failed to load claims');
-// //         setLoading(false);
-// //       });
-// //     } catch (error) {
-// //       console.error('Error parsing user from sessionStorage:', error);
-// //       alert("Invalid session. Please log in again.");
-// //       sessionStorage.removeItem('token');
-// //       navigate('/');
-// //     }
-// //   }
-// //   useEffect(() => {  
-// //   func();
-// //   }, []);
-// //   if (loading) {
-// //     return <p>Loading claims...</p>;
-// //   }
-
-// //   if (error) {
-// //     return <p>{error}</p>;
-// //   }
-// // //ENDDDDD
-// //   return (
-// //     <div style={styles.container}>
-// //       <h2>Active Claim posts</h2>
-// //       <div style={styles.scrollable}>
-// //         {activeclaims.map((claim, index) => (
-// //           <ClaimCard key={index} claim={claim} setSelectedClaim={setSelectedClaim} />
-// //         ))}
-// //       </div>
-// //     </div>
-// //   );
-// // };
-
-// // const styles = {
-// //   container: {
-// //     flex: 1,
-// //     marginRight: '10px',
-// //     border: '1px solid #ccc',
-// //     borderRadius: '5px',
-// //     padding: '10px'
-// //   },
-// //   scrollable: {
-// //     maxHeight: '400px',
-// //     overflowY: 'auto',
-// //   }
-// // };
-
-// // export default ActiveClaims;
-
-// import React, { useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import ClaimCard from './ClaimCard';
-
-// const ActiveClaims = () => {
-//   const [activeClaims, setActiveClaims] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [selectedClaim, setSelectedClaim] = useState(null);
-
-//   const navigate = useNavigate(); 
-//   useEffect(() => {
-    
-//   },[])
-//   const fetchActiveClaims = async () => {
-//     const token = sessionStorage.getItem('token');
-
-//     if (!token) {
-//       alert("Log in first!");
-//       navigate('/');
-//       return;
-//     }
-
-//     try {
-//       const response = await fetch('http://localhost:3080/activeclaims', {
-//         method: 'GET',
-//         headers: {
-//           'Authorization': `Bearer ${token}`,
-//           'Content-Type': 'application/json',
-//         },
-//       });
-
-//       if (!response.ok) {
-//         throw new Error(`Error: ${response.status}`);
-//       }
-
-//       const data = await response.json();
-//       setActiveClaims(data);
-//       setLoading(false);
-//     } catch (error) {
-//       console.error('Error fetching claims:', error);
-//       setError('Failed to load claims');
-//       setLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchActiveClaims();
-//   }, []);
-
-//   if (loading) {
-//     return <p>Loading claims...</p>;
-//   }
-
-//   if (error) {
-//     return <p>{error}</p>;
-//   }
-
-//   return (
-//     <div style={styles.container}>
-//       <h2>Active Claim Posts</h2>
-//       <div style={styles.scrollable}>
-//         {activeClaims.map((claim, index) => (
-//           <ClaimCard key={index} claim={claim} setSelectedClaim={setSelectedClaim} />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// const styles = {
-//   container: {
-//     flex: 1,
-//     marginRight: '10px',
-//     border: '1px solid #ccc',
-//     borderRadius: '5px',
-//     padding: '10px',
-//     height: '100vh', // Make container full screen height
-//     boxSizing: 'border-box',
-//   },
-//   scrollable: {
-//     height: 'calc(100vh - 40px)', // Adjust height to subtract padding and other elements
-//     overflowY: 'auto',
-//     paddingBottom: '0px',
-//   },
-// };
-
-// export default ActiveClaims;
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ClaimCard from './ClaimCard';
@@ -190,9 +6,12 @@ const ActiveClaims = ({ setSelectedClaim }) => {
   const [activeClaims, setActiveClaims] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const user = JSON.parse(sessionStorage.getItem('data')?sessionStorage.getItem('data'):sessionStorage.getItem('user'))
+
+  const email = user.email;
 
   const navigate = useNavigate();
-
+  
   const fetchActiveClaims = async () => {
     const token = sessionStorage.getItem('token');
 
@@ -204,11 +23,14 @@ const ActiveClaims = ({ setSelectedClaim }) => {
 
     try {
       const response = await fetch('http://localhost:3080/activeclaims', {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          email
+        }),
       });
 
       if (!response.ok) {
@@ -239,7 +61,7 @@ const ActiveClaims = ({ setSelectedClaim }) => {
 
   return (
     <div style={styles.container}>
-      <h2>Active Claim Posts</h2>
+      <h2>View responded claims</h2>
       <div style={styles.scrollable}>
         {activeClaims.map((claim, index) => (
           <ClaimCard key={index} claim={claim} setSelectedClaim={setSelectedClaim} />
