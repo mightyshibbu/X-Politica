@@ -106,8 +106,9 @@ router.post('/partySignup', async (req, res) => {
 router.post('/loginC', async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log("email: ",email," pass:",password)
     const user = await Citizen.findOne({ email }).exec();
-
+    console.log("user",user)
     if (user) {
       console.log('Stored hashed password:', user.password);
       console.log('Provided password:', password);
