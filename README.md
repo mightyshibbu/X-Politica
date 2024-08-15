@@ -82,7 +82,7 @@ To get started with **X-Politica**, follow the steps below:
 
 5. **Access the application:**
 
-    Open your browser and go to `http://localhost:3000`.
+    Open your browser and go to `http://localhost:5173`.
 
 ---
 
