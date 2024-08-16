@@ -1,0 +1,157 @@
+
+  .header-section {
+    background-color: #333;
+    padding: 20px;
+    color: #fff;
+  }
+  
+  .header-bot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .logo {
+    margin-right: 20px;
+  }
+  
+  .logo img {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .menu-area {
+    display: flex;
+    align-items: center;
+  }
+  
+  .menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  .menu li {
+    margin-right: 20px;
+  }
+  
+  .menu li a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .menu li a:hover {
+    color: #ccc;
+  }
+  
+  .header-action {
+    display: flex;
+    align-items: center;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .dropdown button:hover {
+    background-color: #444;
+  }
+  
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .dropdown-menu a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .dropdown-menu a:hover {
+    color: #ccc;
+  }
+  
+  /* Party details styles */
+  .party-details-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  .party-list {
+    flex: 1;
+    margin-right: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+  }
+  
+  .party-list h2 {
+    margin-top: 0;
+  }
+  
+  .party-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .party-list li {
+    cursor: pointer;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .party-list li:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .party-details {
+    flex: 2;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+  }
+  
+  .party-details h2 {
+    margin-top: 0;
+  }
+  
+  .party-details p {
+    margin-bottom: 10px;
+  }
+  
+  .party-details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .party-details li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
