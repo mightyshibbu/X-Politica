@@ -1,35 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom';
 import '../css/style.css';
 import '../css/swiper-bundle.min.css';
-
 import logo1 from '../images/logo/logo.png';
 import avatar from '../images/avatar.png'; // Import your avatar image
 
 const LeaderHeader = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(true);//CHANGE
-    
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [userName, setUserName] = useState("Uncle John");
+
   const handleMouseEnter = () => {
     setIsDropdownOpen(true);
   };
-  
- function LogOut() {
-  sessionStorage.removeItem('isLoggedIn');
-  sessionStorage.removeItem('user');
-  sessionStorage.removeItem('token');
-  sessionStorage.removeItem('data');
-}
-  const [userName,setUserName]=useState("Uncle John");
+
   const handleMouseLeave = () => {
     setIsDropdownOpen(false);
   };
+
+  function LogOut() {
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('data');
+  }
+
   useEffect(() => {
-    const user = sessionStorage.getItem('user')?sessionStorage.getItem('user'):sessionStorage.getItem('data');
+    const user = sessionStorage.getItem('user') ? sessionStorage.getItem('user') : sessionStorage.getItem('data');
     if (user) {
       try {
-        console.log("User:",user);
+        console.log("User:", user);
         const parsedUser = JSON.parse(user);
-        console.log("parsedUser Name:",parsedUser.name);
+        console.log("parsedUser Name:", parsedUser.name);
         setUserName(parsedUser.name || "NO NAME");
       } catch (error) {
         console.error("Error parsing user from sessionStorage:", error);
@@ -39,10 +40,11 @@ const LeaderHeader = () => {
       setUserName("NAME");
     }
   }, []);
+
   return (
     <div>
       <header className="header-section bg-color-3">
-        <div className="header-bot tom">
+        <div className="header-bottom">
           <div className="container">
             <div className="header-wrapper">
               <div className="logo">
@@ -52,24 +54,18 @@ const LeaderHeader = () => {
               </div>
               <div className="menu-area">
                 <ul className="menu menu--style">
-                <Link
-                   to="/register"
-                   style={{
-                  color: '#000',
-                  textDecoration: 'none',
-               }}
-               >
-                  Register for Election
-                </Link>
-                    <li>
-                      Manage Claims
-                      <ul className="submenu">
-                        <li><Link to="/newclaim">New Claim</Link></li>
-                        <li><Link to="/viewclaimsleader">View Claims</Link></li>
-                      </ul>
-                    </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/register" style={{ textDecoration: 'underline' }}>Register for Election</Link>
+                  </li>
                   <li>
-                   View
+                    <Link to="#0">Manage Claims</Link>
+                    <ul className="submenu">
+                      <li><Link to="/newclaim">New Claim</Link></li>
+                      <li><Link to="/viewclaimsleader">View Claims</Link></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <Link to="#0">View</Link>
                     <ul className="submenu">
                       <li><Link to="/politicalparty">Political Party</Link></li>
                       <li><Link to="blogs.html">Stats</Link></li>
@@ -77,7 +73,7 @@ const LeaderHeader = () => {
                     </ul>
                   </li>
                   <li>
-                    About
+                    <Link to="#0">About</Link>
                     <ul className="submenu">
                       <li><Link to="about.html">How to use</Link></li>
                       <li><Link to="price.html">X-Politica</Link></li>
@@ -100,8 +96,8 @@ const LeaderHeader = () => {
                     </button>
                     {isDropdownOpen && (
                       <div className="dropdown-menu">
-                        <a href="/profile">My Profile</a>
-                        <a href="/" onClick={LogOut}>Log out</a>
+                        <Link to="/leaderprofile">My Profile</Link>
+                        <Link to="/" onClick={LogOut}>Log out</Link>
                       </div>
                     )}
                   </div>

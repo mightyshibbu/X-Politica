@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import logo1 from '../images/logo/logo.png';
+import LeaderHeader from './LeaderHeader';
 
 function LeaderElectionRegister() {
     const [leaderName, setLeaderName] = useState('');
@@ -73,14 +74,7 @@ function LeaderElectionRegister() {
     return (
         <div className="container mt-4">
             {/* Header with logo */}
-            <div className="header-wrapper mb-4">
-                <div className="logo">
-                    <Link to="/homeL">
-                        <img className="dark" src={logo1} alt="logo" />
-                    </Link>
-                </div>
-            </div>
-
+            <LeaderHeader/>
             <h1>Register for Election</h1>
 
             {/* Registration and Election Records side-by-side */}

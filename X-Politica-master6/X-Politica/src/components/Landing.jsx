@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import {useNavigate, BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import '../css/Landing.css'; // Import the CSS file
+
 const Landing = (props) => {
   const { loggedIn, email } = props;
   const navigate = useNavigate();
@@ -24,12 +26,13 @@ const Landing = (props) => {
   const onLoginAsAdmin = () => {
     navigate('/adminL', { replace: true });
   };
+
   return (
     <div className="mainContainer">
       <div className={'titleContainer'}>
         <div>X-Politica</div>
       </div>
-      <div>A political overview and claim validation platform!</div>
+      <div className="tagline">A political overview and claim validation platform!</div>
       <div className={'buttonContainer'}>
         <input
           className={'inputButton'}
@@ -37,7 +40,7 @@ const Landing = (props) => {
           onClick={onLoginAsCitizen}
           value={loggedIn ? 'Log out' : 'Log in as Citizen'}
         />
-        <div style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={onSignUpAsCitizen}>
+        <div  className="QuickSignup" onClick={onSignUpAsCitizen}>
           Not registered? Quick sign up as Citizen
         </div>
         <input
@@ -46,12 +49,12 @@ const Landing = (props) => {
           onClick={onLoginAsLeader}
           value={loggedIn ? 'Log out' : 'Log in as Leader'}
         />
-        <div style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={onSignUpAsLeader}>
+        <div className="QuickSignup" onClick={onSignUpAsLeader}>
           Not registered? Quick sign up as Leader
         </div>
         {loggedIn ? <div>Your email address is {email}</div> : <div />}
         <input
-          className={'inputButton'}
+          className={'admininputButton'}
           type="button"
           onClick={onLoginAsAdmin}
           value={loggedIn ? 'Log out' : 'Log in as Admin'}

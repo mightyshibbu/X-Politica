@@ -45,7 +45,7 @@ const Header = () => {
   return (
     <div>
       <header className="header-section bg-color-3">
-        <div className="header-bot tom">
+        <div className="header-bottom">
           <div className="container">
             <div className="header-wrapper">
               <div className="logo">
@@ -56,7 +56,7 @@ const Header = () => {
               <div className="menu-area">
                 <ul className="menu menu--style">
                   <li className="nav-item">
-                   <Link className="nav-link" to="/citizenVote">Vote</Link>
+                   <Link className="nav-link" to="/citizenVote"  style={{ textDecoration: 'underline' }}>Vote</Link>
                   </li>
                   <li>
                     <Link to="#0">Services</Link>
@@ -97,7 +97,7 @@ const Header = () => {
                     </button>
                     {isDropdownOpen && (
                       <div className="dropdown-menu">
-                        <Link to="/profile">My Profile</Link>
+                        <Link to="/citizenprofile">My Profile</Link>
                         <Link to="/" onClick={LogOut}>Log out</Link>
                       </div>
                     )}

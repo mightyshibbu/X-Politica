@@ -27,6 +27,7 @@ const styles = {
     display: 'flex',
     padding: '20px',
     height: '100vh',
+    paddingTop:'250px'
   },
 };
 

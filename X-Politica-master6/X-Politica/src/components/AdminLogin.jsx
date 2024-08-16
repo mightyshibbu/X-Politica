@@ -43,6 +43,10 @@ const AdminLog = () => {
         });
 
         if (response.ok) {
+          const {admin,message} = await response.json();
+          sessionStorage.setItem('isLoggedIn', 'true');
+          sessionStorage.setItem('user', JSON.stringify(admin)); // Store user info
+          // sessionStorage.setItem('token', JSON.stringify(token)); // Store user token
           navigate('/homeA', { state: { message: 'Logged in successfully!' } });
         } else {
           const errorData = await response.json();

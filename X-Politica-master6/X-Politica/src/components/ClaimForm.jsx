@@ -67,7 +67,7 @@ const ClaimForm = ({setClaimSubmitted}) => {
   };
 
   return (
-    <div>
+    <div className='claimform'>
       <h2>Create Claim!</h2>
       <form onSubmit={handleSubmit}>
         <div className="inputContainer">

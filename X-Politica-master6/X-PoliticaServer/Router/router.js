@@ -215,7 +215,7 @@ router.post('/adminL', async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid password' });
     }
-    res.status(200).json({ message: 'Logged in successfully!' });
+    res.status(200).json({ message: 'Logged in successfully!',admin:admin });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
@@ -295,6 +295,26 @@ router.get('/leaders/:city', async (req, res) => {
     const { city } = req.params;
     const leaders = await Leader.find({ district: city });
     res.json(leaders);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+router.put('/leader/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedData = req.body;
+
+    // Find and update the Leader by id
+    const leader = await Leader.findByIdAndUpdate(id, updatedData, {
+      new: true, // Return the updated document
+      runValidators: true // Validate the data before updating
+    });
+
+    if (!leader) {
+      return res.status(404).json({ error: 'Leader not found' });
+    }
+
+    res.json(leader);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -651,6 +671,111 @@ router.post('/logout', (req, res) => {
     res.clearCookie('connect.sid'); // Clears the session ID cookie
     res.status(200).json({ message: 'Logout successful' });
   });
+});
+
+
+router.get('/getBestLeaders', async (req, res) => {
+  try {
+    const leaders = await Leader.find().exec(); // Find all leaders
+    console.log("leaders: ",leaders);
+
+    const maxApprovedClaimsLeaders = [];
+
+    for (let leader of leaders) {
+      console.log("leader: ",)
+      const leaderId = leader.aadhaarNumber; 
+      const claims = await Claim.find({ leaderId }).exec(); // Find all claims for the current leader
+      console.log("claims: ",claims)
+      let maxApprovedClaims = 0;
+
+      for (let claim of claims) {
+        const approvedCount = claim.citizensApproved.length; // Use the length of the citizensApproved array
+        console.log("ApprovedCount: ",approvedCount)
+        maxApprovedClaims += approvedCount;
+      }
+      console.log("maxApprovedClaims: ",maxApprovedClaims)
+
+      maxApprovedClaimsLeaders.push({ leader, maxApprovedClaims });
+    }
+
+    maxApprovedClaimsLeaders.sort((a, b) => b.maxApprovedClaims - a.maxApprovedClaims); // Sort the leaders by max approved claims in descending order
+    const top6Leaders = maxApprovedClaimsLeaders.slice(0, 6); // Get the top 6 leaders
+
+    res.json(top6Leaders);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error fetching leaders with max approved claims' });
+  }
+});
+// router.get('/getBestLeaders', async (req, res) => {
+//   try {
+//     // Find all leaders
+//     const leaders = await Leader.find().exec();
+//     console.log("HELLO BACCHO");
+
+//     // Prepare an array to hold leaders and their approved claims count
+//     const maxApprovedClaimsLeaders = [];
+
+//     // Iterate over each leader
+//     for (const leader of leaders) {
+//       // Find all claims associated with the current leader
+//       const claims = await Claim.find({ leaderId: leader._id }).exec();
+//       let maxApprovedClaims = 0;
+
+//       // Iterate over each claim to count approved claims
+//       for (let claim of claims) {
+//         const citizensApproved = await Citizen.find({ claims: claim._id, status: 'approved' }).exec();
+//         maxApprovedClaims += citizensApproved.length;
+//       }
+
+//       // Add the leader and their max approved claims to the array
+//       maxApprovedClaimsLeaders.push({ leader, maxApprovedClaims });
+//     }
+
+//     // Sort leaders by max approved claims in descending order
+//     maxApprovedClaimsLeaders.sort((a, b) => b.maxApprovedClaims - a.maxApprovedClaims);
+
+//     // Get the top 6 leaders
+//     const top6Leaders = maxApprovedClaimsLeaders.slice(0, 6);
+
+//     // Send the response
+//     res.json(top6Leaders);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: 'Error fetching leaders with max approved claims' });
+//   }
+// });
+
+router.get('/citizen/:id', async (req, res) => {
+  try {
+    console.log("INSIDE GET citixn/:id api")
+    const user = await Citizen.findById(req.params.id);
+    console.log('INSINDE user: ',user)
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Update User Profile
+router.put('/citizen/:id', async (req, res) => {
+  try {
+    console.log("INSIDE citixn/:id api")
+    const updatedUser = await Citizen.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(updatedUser);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 export default router;

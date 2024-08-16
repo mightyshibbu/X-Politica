@@ -66,8 +66,11 @@ const styles = {
     fontFamily: 'Arial, sans-serif',
   },
   main: {
-    display: 'flex',
-    padding: '20px',
+    display: 'flex', // Use flex layout
+    padding: '20px', // Padding inside the container
+    marginTop: '5%', // Top margin
+    alignItems: 'center', // Align items vertically in the center
+    justifyContent: 'center', // Align items horizontally in the center
   }
 };
 

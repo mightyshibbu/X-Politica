@@ -49,9 +49,6 @@ const LoginC = () => {
 
         if (response.ok) {
           const {message,data,token} = await response.json();
-          console.log('Inside LoginC handleSubmit data:+ ', {data});
-          console.log('Inside LoginC handleSubmit token: + ', {token});
-          console.log('Inside LoginC handleSubmit message:+ ', {message});
           const {name} = data;
           sessionStorage.setItem('isLoggedIn', 'true');
           sessionStorage.setItem('user', JSON.stringify(data)); // Store user info

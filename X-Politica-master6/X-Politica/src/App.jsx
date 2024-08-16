@@ -19,6 +19,8 @@ import LeaderElectionRegister from './components/LeaderElectionRegister.jsx';
 import CitizenVote from './components/CitizenVote.jsx';
 import AdminLogin from './components/AdminLogin.jsx';
 import DeclareWinnerPage from './components/DeclareWinner..jsx';
+import MyProfile from './components/MyProfile.jsx';
+import MyLeaderProfile from './components/MyLeaderProfile.jsx';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -45,6 +47,8 @@ function App() {
         <Route path="/viewclaimsleader" element={<ViewClaimsLeader/>} />
         <Route path="/claim" element={< ViewClaims/>} />
         <Route path="/newclaim" element={<NewClaim />} />
+        <Route path="/citizenprofile" element={<MyProfile />} />
+        <Route path="/leaderprofile" element={<MyLeaderProfile />} />
 
       </Routes>
     </BrowserRouter>
