@@ -3,7 +3,6 @@
 ### A Comprehensive Full-Stack MERN Application
 
 Welcome to **X-Politica**! This project is a showcase of my expertise in designing and implementing complex systems using the MERN (MongoDB, Express, React, Node.js) stack. The application features secure authentication and authorization mechanisms and a user-friendly interface to manage and track claims and approvals.
-
 ---
 
 ## Why X-Politica? 🌐
@@ -31,7 +30,25 @@ Welcome to **X-Politica**! This project is a showcase of my expertise in designi
 
 
 
-## Getting Started 🛠️
+## Getting Started with Sneak Peak 🛠️
+![Screenshot 2024-08-16 002435](https://github.com/user-attachments/assets/8874368e-09ec-4cff-ab91-45b5da71d609)
+![Screenshot 2024-08-16 181516](https://github.com/user-attachments/assets/e3cab50c-905e-4b5f-9af4-1be77e5ad7cb)
+![Screenshot 2024-08-16 185302](https://github.com/user-attachments/assets/0f71e34e-3594-4bd2-89c0-09d32d5cde30)
+![Screenshot 2024-08-16 185315](https://github.com/user-attachments/assets/1acfe60c-35b0-4bf5-ac9f-44026d736416)
+![Screenshot 2024-08-16 185322](https://github.com/user-attachments/assets/7484db1c-3075-4458-a961-9b78a2729bc6)
+![Screenshot 2024-08-16 185328](https://github.com/user-attachments/assets/c8b49d96-3382-46ae-8352-8f8b2fd8bb3a)
+![Screenshot 2024-08-16 185358](https://github.com/user-attachments/assets/e14e0f1c-6965-4bd0-a4e6-20d38aed5875)
+![Screenshot 2024-08-16 185416](https://github.com/user-attachments/assets/38ae0404-0611-47b4-807a-f6ae1c489f9d)
+![Screenshot 2024-08-16 191417](https://github.com/user-attachments/assets/d3bf067d-590f-4a3a-873c-288e9ee053ce)
+![Screenshot 2024-08-16 191441](https://github.com/user-attachments/assets/2f6c5253-fbb4-445d-867f-a5b5b1420b48)
+![Screenshot 2024-08-16 191447](https://github.com/user-attachments/assets/413de418-a940-48af-aecd-12066f6e0a4f)
+![Screenshot 2024-08-16 191453](https://github.com/user-attachments/assets/5bf7fa94-f668-4818-9bf5-6c261b46270f)
+![Screenshot 2024-08-16 191544](https://github.com/user-attachments/assets/352d259e-27c0-4585-85fb-25baf7a13f45)
+![Screenshot 2024-08-16 193858](https://github.com/user-attachments/assets/5a40d064-e386-4e2f-97e9-ca1ffe7f8090)
+![Screenshot 2024-08-16 194448](https://github.com/user-attachments/assets/f1def589-bef7-4bdf-aa10-dc0bb149a75b)
+![Screenshot 2024-08-16 194625](https://github.com/user-attachments/assets/05b79748-e1df-4727-ae40-c8185126fba2)
+![Screenshot 2024-08-16 194903](https://github.com/user-attachments/assets/f107817a-5bcd-473f-85b6-b21f5b27f4d8)
+![Screenshot 2024-08-16 195532](https://github.com/user-attachments/assets/dd53e558-dc89-43bf-9060-f43a8ef0932c)
 
 To get started with **X-Politica**, follow the steps below:
 
