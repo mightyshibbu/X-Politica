@@ -88,10 +88,11 @@ To get started with **X-Politica**, follow the steps below:
 
 ## Team Members 👥
 
-- **Pranav Tripathi** - CDAC ACTS 2024 (I), Full-Stack Developer
+- **Pranav Tripathi** -  [PROJECT LEAD] CDAC ACTS 2024 (I), Full-Stack Developer
+- **Rahul Sura**- CDAC ACTS 2024 (I), Full-Stack Developer
 - **Vinayak Shankar** - CDAC ACTS 2024 (I), Full-Stack Developer 
-- **Pradumna Narkhede** - CDAC ACTS 2024 (I), Full-Stack Developer 
-- **Saaril Shah** - CDAC ACTS 2024 (I), Full-Stack Developer 
+- **Pradumna Narkhede** - CDAC ACTS 2024 (I), UI/UX 
+- **Saaril Shah** - CDAC ACTS 2024 (I), UI/UX
 
 ---
 
